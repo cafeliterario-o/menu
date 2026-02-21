@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cafe Literario</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--cafe:#3E2723;
+--cafe2:#5D4037;
+--beige:#F3E5D8;
+--dorado:#C6A75E;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+height:100vh;
+display:flex;
+flex-direction:column;
+font-family:'Baloo 2',cursive;
+background:linear-gradient(135deg,#f3e5d8,#e8d8c3);
+overflow:hidden;
+}
+
+/* HEADER */
+header{
+height:70px;
+background:var(--cafe);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:1.4rem;
+letter-spacing:3px;
+box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+/* FOOTER */
+footer{
+height:60px;
+background:var(--cafe);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:.9rem;
+box-shadow:0 -4px 15px rgba(0,0,0,.2);
+}
+
+/* AREA CENTRAL */
+.main{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* PANEL */
+.panel{
+width:1100px;
+height:520px;
+background:white;
+border-radius:30px;
+box-shadow:0 20px 50px rgba(0,0,0,.2);
+display:flex;
+overflow:hidden;
+}
+
+/* CONTENIDO IZQUIERDO */
+.content{
+flex:2;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:40px;
+transition:opacity .3s ease;
+}
+
+/* CARRITO DERECHO */
+.cart{
+flex:1;
+background:#f9f6f3;
+padding:25px;
+border-left:2px solid #eee;
+display:flex;
+flex-direction:column;
+}
+
+.cart h3{
+text-align:center;
+margin-bottom:15px;
+}
+
+.cart-items{
+flex:1;
+font-size:.9rem;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+}
+
+.total{
+margin-top:10px;
+font-weight:700;
+}
+
+/* BOTONES */
+.btn{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:var(--cafe);
+color:white;
+cursor:pointer;
+margin:10px;
+font-size:1rem;
+transition:all .3s ease;
+position:relative;
+overflow:hidden;
+}
+
+.btn:hover{
+background:var(--cafe2);
+transform:translateY(-3px);
+box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+
+.btn:active{
+transform:scale(.95);
+}
+
+/* PRODUCTOS */
+.products{
+display:flex;
+gap:20px;
+}
+
+.card{
+background:#fafafa;
+padding:20px;
+border-radius:20px;
+width:190px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 30px rgba(0,0,0,.2);
+}
+
+/* PERSONALIZAR */
+.extra{
+display:flex;
+justify-content:space-between;
+margin:10px 0;
+}
+
+.counter{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.counter button{
+width:28px;
+height:28px;
+border:none;
+border-radius:50%;
+background:var(--cafe);
+color:white;
+cursor:pointer;
+transition:.2s;
+}
+
+.counter button:hover{
+background:var(--cafe2);
+transform:scale(1.2);
+}
+
+.hidden{
+display:none;
+}
+
+</style>
+</head>
+<body>
+
+<header>CAFE LITERARIO</header>
+
+<div class="main">
+<div class="panel">
+
+<!-- CONTENIDO -->
+<div class="content">
+
+<!-- MENU INICIAL -->
+<div id="menuPrincipal">
+<h2>Bienvenido ☕</h2>
+<button class="btn" onclick="irPedido()">Hacer Pedido</button>
+<button class="btn">Ver Promociones</button>
+<button class="btn">Información</button>
+</div>
+
+<!-- OPCION PEDIDO -->
+<div id="tipoPedido" class="hidden">
+<h2>¿Cómo deseas tu pedido?</h2>
+<button class="btn" onclick="mostrarProductos()">Tomar aquí</button>
+<button class="btn" onclick="mostrarProductos()">Para llevar</button>
+</div>
+
+<!-- PRODUCTOS -->
+<div id="productos" class="hidden">
+<h2>Selecciona tu café</h2>
+<div class="products">
+<div class="card">
+<h4>Latte</h4>
+<p>$80</p>
+<button class="btn" onclick="personalizar('Latte',80)">Elegir</button>
+</div>
+
+<div class="card">
+<h4>Capuccino</h4>
+<p>$90</p>
+<button class="btn" onclick="personalizar('Capuccino',90)">Elegir</button>
+</div>
+
+<div class="card">
+<h4>Americano</h4>
+<p>$70</p>
+<button class="btn" onclick="personalizar('Americano',70)">Elegir</button>
+</div>
+</div>
+</div>
+
+<!-- PERSONALIZAR -->
+<div id="personalizar" class="hidden">
+<h2 id="nombreCafe"></h2>
+
+<div class="extra">
+<span>Azúcar +$15</span>
+<div class="counter">
+<button onclick="cambiar('azucar',-1)">-</button>
+<span id="azucar">0</span>
+<button onclick="cambiar('azucar',1)">+</button>
+</div>
+</div>
+
+<div class="extra">
+<span>Shot Espresso +$20</span>
+<div class="counter">
+<button onclick="cambiar('shot',-1)">-</button>
+<span id="shot">0</span>
+<button onclick="cambiar('shot',1)">+</button>
+</div>
+</div>
+
+<button class="btn" onclick="agregar()">Agregar al carrito</button>
+<button class="btn" onclick="mostrarProductos()">Cancelar</button>
+
+</div>
+
+</div>
+
+<!-- CARRITO -->
+<div class="cart">
+<h3>Carrito</h3>
+<div class="cart-items" id="cartItems"></div>
+<div class="total">Total: $<span id="total">0</span></div>
+</div>
+
+</div>
+</div>
+
+<footer>© 2026 Cafe Literario</footer>
+
+<script>
+
+let basePrecio=0;
+let nombreActual="";
+let extras={azucar:0,shot:0};
+let carrito=[];
+
+function ocultarTodo(){
+document.getElementById("menuPrincipal").classList.add("hidden");
+document.getElementById("tipoPedido").classList.add("hidden");
+document.getElementById("productos").classList.add("hidden");
+document.getElementById("personalizar").classList.add("hidden");
+}
+
+function irPedido(){
+ocultarTodo();
+document.getElementById("tipoPedido").classList.remove("hidden");
+}
+
+function mostrarProductos(){
+ocultarTodo();
+document.getElementById("productos").classList.remove("hidden");
+}
+
+function personalizar(nombre,precio){
+ocultarTodo();
+nombreActual=nombre;
+basePrecio=precio;
+extras={azucar:0,shot:0};
+document.getElementById("azucar").innerText=0;
+document.getElementById("shot").innerText=0;
+document.getElementById("nombreCafe").innerText=nombre;
+document.getElementById("personalizar").classList.remove("hidden");
+}
+
+function cambiar(tipo,valor){
+extras[tipo]+=valor;
+if(extras[tipo]<0)extras[tipo]=0;
+document.getElementById(tipo).innerText=extras[tipo];
+}
+
+function agregar(){
+let precioFinal=basePrecio + extras.azucar*15 + extras.shot*20;
+
+let descripcion=nombreActual;
+if(extras.azucar>0)descripcion+=` + Azúcar(${extras.azucar})`;
+if(extras.shot>0)descripcion+=` + Shot(${extras.shot})`;
+
+carrito.push({descripcion,precioFinal});
+actualizarCarrito();
+mostrarProductos();
+}
+
+function actualizarCarrito(){
+let cont=document.getElementById("cartItems");
+cont.innerHTML="";
+let total=0;
+
+carrito.forEach((item,i)=>{
+total+=item.precioFinal;
+cont.innerHTML+=`
+<div class="cart-item">
+<span>${item.descripcion}</span>
+<button onclick="eliminar(${i})">X</button>
+</div>`;
+});
+
+document.getElementById("total").innerText=total;
+}
+
+function eliminar(i){
+carrito.splice(i,1);
+actualizarCarrito();
+}
+
+</script>
+
+</body>
+</html>
